@@ -1,0 +1,156 @@
+{
+  "project_info": {
+    "project_number": "504115345758",
+    "firebase_url": "https://tvldb-9ad70-default-rtdb.firebaseio.com",
+    "project_id": "tvldb-9ad70",
+    "storage_bucket": "tvldb-9ad70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504115345758:android:af1263890afa66dd7a37cf",
+        "android_client_info": {
+          "package_name": "com.example.Admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_cICmC8Vj5KcEb7IzD2uwfKCta-WUq1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504115345758:android:8ee127cef2eb4ecf7a37cf",
+        "android_client_info": {
+          "package_name": "com.example.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_cICmC8Vj5KcEb7IzD2uwfKCta-WUq1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504115345758:android:0657918f564516e77a37cf",
+        "android_client_info": {
+          "package_name": "com.example.tvlonwer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_cICmC8Vj5KcEb7IzD2uwfKCta-WUq1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504115345758:android:1e362e31a37712887a37cf",
+        "android_client_info": {
+          "package_name": "com.example.tvlowner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_cICmC8Vj5KcEb7IzD2uwfKCta-WUq1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504115345758:android:d1a1012a2ec471a57a37cf",
+        "android_client_info": {
+          "package_name": "com.example.vendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_cICmC8Vj5KcEb7IzD2uwfKCta-WUq1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504115345758-meqsgim6v5pibr80rtojvco3qpqii5n6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
