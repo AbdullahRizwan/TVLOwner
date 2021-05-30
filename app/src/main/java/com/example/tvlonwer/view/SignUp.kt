@@ -78,9 +78,7 @@ class SignUp : AppCompatActivity() {
     }
 
     fun onSignIn(view: View) {
-        val value  = Intent(this, MainScreenActivity::class.java)
-        value.putExtra("user", FirebaseAuth.getInstance().currentUser?.uid)
-        value.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val value  = Intent(this, Login::class.java)
         startActivity(value)
     }
 }

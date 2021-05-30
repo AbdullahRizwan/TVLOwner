@@ -14,8 +14,8 @@
 
     <ImageButton
         android:id="@+id/imageIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:contentDescription="@string/nav_header_desc"
         app:srcCompat="@mipmap/myimage"
         android:onClick="profile" />

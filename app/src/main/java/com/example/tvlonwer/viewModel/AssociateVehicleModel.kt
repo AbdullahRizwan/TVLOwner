@@ -43,10 +43,11 @@ class AssociateVehicleModel  : ViewModel()  {
             }
     }
 
-    fun addVehicle(mText: String, vehicle: Vehicle) {
+    fun addVehicle(mText: String,lisenceNo: String, vehicle: Vehicle) {
         val uid: String = FirebaseAuth.getInstance().currentUser.uid.toString()
         val data = hashMapOf(
             "uid" to uid,
+            "lisenceNumber" to lisenceNo,
             "vehicleKilometer" to mText,
             "Vehicle" to vehicle
         )
