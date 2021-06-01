@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.tvlonwer.R
-import com.example.tvlowner.viewModel.LoginViewModel
+import com.example.tvlonwer.viewModel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore

@@ -9,7 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.example.tvlonwer.R
-import com.example.tvlowner.viewModel.SignUpViewModel
+import com.example.tvlonwer.viewModel.SignUpViewModel
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
