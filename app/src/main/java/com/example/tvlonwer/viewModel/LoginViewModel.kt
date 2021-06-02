@@ -1,4 +1,4 @@
-package com.example.tvlowner.viewModel
+package com.example.tvlonwer.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -1,11 +1,11 @@
 package com.example.tvlonwer.model
 
-class VehicleUser {
+class  VehicleUser {
     private var  plateNo : String = ""
     private var  vehicleUserId: String =""
     private var  kilometers: Int = 0
     private var vehicleId: String=""
-    private lateinit var  vehicle : Vehicle
+    private var  vehicle : Vehicle
 
     constructor(
         plateNo: String,
@@ -19,5 +19,9 @@ class VehicleUser {
         this.kilometers = kilometers
         this.vehicleId = vehicleId
         this.vehicle = vehicle
+    }
+
+    public fun getVehicle(): Vehicle {
+        return this.vehicle
     }
 }
