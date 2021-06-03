@@ -24,20 +24,28 @@ class GalleryViewModel : ViewModel() {
                 for (document in result) {
                     var a = document.data
                     val vehicle = a["Vehicle"] as Map<String, *>
-                    if(a["uid"]?.equals(Owner.uid) == true)
-                    list.add(
-                        VehicleUser(
-                            a["lisenceNumber"] as String,
-                            a["uid"] as String,
-                            a["vehicleKilometer"].toString().toInt() as Int,
-                            vehicle["vehicleId"] as String,
-                            Vehicle(vehicle["vehicleID"].toString(),
-                                vehicle["model"].toString(),
-                                vehicle["make"].toString(),
-                                vehicle["year"].toString(),
-                                vehicle["parts"] as ArrayList<Part>)
-                        )
-                    )
+                    if(a["uid"]?.equals(Owner.uid) == true){
+                       var lisenceNumber = a["lisenceNumber"] as String
+                        var uid = a["uid"] as String
+                        var vehicleKilometers = a["vehicleKilometer"].toString().toInt() as Int
+                        var vehicleId = vehicle["vehicleId"] as String
+                        var vehicleModel = vehicle["model"].toString()
+                        var vehicleMake = vehicle["make"].toString()
+                        var vehicleYear = vehicle["year"].toString()
+                        var parts : ArrayList<HashMap<String,String>> = vehicle["parts"] as ArrayList<HashMap<String, String>>
+                        var partsofVehicle: ArrayList<Part> = ArrayList()
+                        for(map in parts){
+                            partsofVehicle.add(Part(map["partId"] as String,
+                                map["name"] as String,
+                                map["type"] as String,
+                                map["life"] as String,
+                                map["remainingLife"]as String,
+                                map["description"] as String,
+                            ))
+                        }
+                        list.add(VehicleUser(lisenceNumber,uid,vehicleKilometers,vehicleId,
+                            Vehicle(vehicleId,vehicleModel,vehicleMake,vehicleYear,partsofVehicle)))
+                    }
                 }
                 data.value = list
             }

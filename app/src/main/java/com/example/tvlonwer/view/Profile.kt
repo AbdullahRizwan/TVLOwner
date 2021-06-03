@@ -1,14 +1,13 @@
 package com.example.tvlonwer.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Owner
 import com.google.firebase.auth.FirebaseAuth

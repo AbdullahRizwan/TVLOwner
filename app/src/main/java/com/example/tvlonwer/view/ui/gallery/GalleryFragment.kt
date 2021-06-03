@@ -5,22 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tvlonwer.MainActivity
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Vehicle
+import com.example.tvlonwer.view.Login
 import com.example.tvlonwer.view.MainScreenActivity
-import com.example.tvlonwer.view.adapterSelectVehicle
 import com.example.tvlonwer.view.associate_vehicle_owner
-import com.example.tvlonwer.viewModel.AssociateVehicleModel
+import com.example.tvlonwer.view.showParts
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 class GalleryFragment : Fragment() , gallaryRecyclerViewAdapter.OnClickListener{
 
@@ -66,6 +64,9 @@ class GalleryFragment : Fragment() , gallaryRecyclerViewAdapter.OnClickListener{
     }
 
     override fun onVehicleClick(vehicle: Vehicle?) {
-        Toast.makeText(this.context,vehicle?.make.toString()+" selected",Toast.LENGTH_SHORT).show()
+
+        val value  = Intent(activity, showParts::class.java)
+        value.putExtra("vehicle",vehicle)
+        startActivity(value)
     }
 }
