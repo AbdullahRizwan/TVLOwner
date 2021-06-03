@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.tvlonwer.model.Result
 
-class AssociateVehicleModel  : ViewModel()  {
+class AssociateVehicleViewModel  : ViewModel()  {
     var data = MutableLiveData<ArrayList<Vehicle>>()
     private val _result = MutableLiveData<Result<String>>()
     val result : LiveData<Result<String>> = _result
@@ -26,15 +26,32 @@ class AssociateVehicleModel  : ViewModel()  {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     var a = document.data
-                    list.add(
-                        Vehicle(
-                            document.id.toString(),
-                            a["model"] as String?,
-                            a["make"] as String?,
-                            a["year"] as String?,
-                            a["parts"] as ArrayList<Part>
-                        )
-                    )
+//                    list.add(
+//                        Vehicle(
+//                            document.id.toString(),
+//                            a["model"] as String?,
+//                            a["make"] as String?,
+//                            a["year"] as String?,
+//                            a["parts"] as ArrayList<Part>
+//                        )
+//
+//                    )
+                    var make : String? = a["make"] as String
+                    var model : String? = a["model"] as String
+                    var year : String? = a["year"] as String
+                    var parts : ArrayList<HashMap<String,String>> = a["parts"] as ArrayList<HashMap<String, String>>
+                    var partsofVehicle: ArrayList<Part> = ArrayList()
+                    for(map in parts){
+                        partsofVehicle.add(Part(map["partId"] as String,
+                            map["name"] as String,
+                            map["type"] as String,
+                            map["life"] as String,
+                            map["remainingLife"] as String,
+                            map["description"] as String,
+                        ))
+                    }
+                    list.add(Vehicle( document.id.toString(),model,make,year,partsofVehicle))
+
                 }
                 data.value = list
             }

@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Vehicle
 import com.example.tvlonwer.model.VehicleUser
-import com.example.tvlonwer.viewModel.AssociateVehicleModel
+import com.example.tvlonwer.viewModel.AssociateVehicleViewModel
 import com.example.tvlonwer.model.Result
 
 
 class associate_vehicle_owner : AppCompatActivity(), adapterSelectVehicle.OnClickListener {
-    private lateinit var viewModel: AssociateVehicleModel
+    private lateinit var viewViewModel: AssociateVehicleViewModel
     private lateinit var m_Text: String
     private lateinit var l_number: String
     var flag = false
@@ -32,10 +32,10 @@ class associate_vehicle_owner : AppCompatActivity(), adapterSelectVehicle.OnClic
 
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewAssociateVehicle)
         val recyclerViewAdapter = adapterSelectVehicle()
-        viewModel = AssociateVehicleModel()
-        viewModel.data.observe(this, Observer {
+        viewViewModel = AssociateVehicleViewModel()
+        viewViewModel.data.observe(this, Observer {
 
-            recyclerViewAdapter.setData(viewModel.data, this.applicationContext, this)
+            recyclerViewAdapter.setData(viewViewModel.data, this.applicationContext, this)
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = recyclerViewAdapter
         })
@@ -96,8 +96,8 @@ class associate_vehicle_owner : AppCompatActivity(), adapterSelectVehicle.OnClic
     }
 
     fun add(vehicle: Vehicle){
-        viewModel.addVehicle(m_Text, l_number,vehicle)
-        viewModel.result.observe(this, Observer {
+        viewViewModel.addVehicle(m_Text, l_number,vehicle)
+        viewViewModel.result.observe(this, Observer {
             val result = it ?: return@Observer
             if (result is Result.Success) {
                 Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show()
