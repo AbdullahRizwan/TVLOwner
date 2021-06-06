@@ -51,5 +51,9 @@ class showParts : AppCompatActivity(), adapterShowParts.OnClickListener {
 
     override fun onPartClick(part: Part?) {
         Toast.makeText(this,"Heyyyy",Toast.LENGTH_SHORT).show()
+            if (part != null) {
+                part.remainingLife="0"
+
+            }
     }
 }

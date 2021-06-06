@@ -13,6 +13,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,8 +21,12 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.tvlonwer.CURRENTSELECTEDVEHICLE
 import com.example.tvlonwer.R
+import com.example.tvlonwer.view.Activity_Select_Current_Vehicle
+import com.example.tvlonwer.view.AddKilometers
 import com.example.tvlonwer.view.MainScreenActivity
+import com.example.tvlonwer.view.TransferOwnership
 
 class HomeFragment : Fragment() {
 
@@ -43,9 +48,26 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val textView: TextView = root.findViewById(R.id.kms)
+        val plateView: TextView = root.findViewById(R.id.plate_no)
         kilometersView = root.findViewById(R.id.kms)
+        /*if(CURRENTSELECTEDVEHICLE!=null) {
+            /* val kmsText = CURRENTSELECTEDVEHICLE.getCuurentKilometer().toString()
+             if (kmsText != null)
+                 textView.text = kmsText
+             else
+                 textView.text = "0"
+             val licenseText = CURRENTSELECTEDVEHICLE.getCuurentLicense()
+             if (licenseText != null)
+                 plateView.text = licenseText
+             else
+                 plateView.text = "0"*/
+         }else{
+             textView.text = "NOT SET"
+             plateView.text = "NOT SET"
+         }*/
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+
+
         })
         mContext = this.activity
         locationManager = this.activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
@@ -78,7 +100,37 @@ class HomeFragment : Fragment() {
             5.0.toFloat(),
             locationListenerGPS
         )
+            if(CURRENTSELECTEDVEHICLE.getVehicleUser()!=null) {
+             val kmsText = CURRENTSELECTEDVEHICLE.getCurrentKilometer().toString()
+             if (kmsText != null)
+                 textView.text = kmsText
+             else
+                 textView.text = "0 " +kms
+             val licenseText = CURRENTSELECTEDVEHICLE.getCurrentLicense()
+             if (licenseText != null)
+                 plateView.text = licenseText
+             else
+                 plateView.text = "0"
 
+        }else {
+                textView.text = "NOT SET"
+                plateView.text = "NOT SET"
+            }
+        val ownershipBtn: Button
+        ownershipBtn=root.findViewById(R.id.transferOwnership)
+        ownershipBtn.setOnClickListener{
+            startActivity(Intent(root.context,TransferOwnership::class.java))
+        }
+        val selectVehicleBtn:Button
+        selectVehicleBtn=root.findViewById(R.id.selectVehicle)
+        selectVehicleBtn.setOnClickListener {
+            startActivity(Intent(root.context,Activity_Select_Current_Vehicle::class.java))
+        }
+        val selectKilometersBtn:Button
+        selectKilometersBtn=root.findViewById(R.id.addKilometer)
+        selectKilometersBtn.setOnClickListener {
+            startActivity(Intent(root.context, AddKilometers::class.java))
+        }
         return root
     }
 
