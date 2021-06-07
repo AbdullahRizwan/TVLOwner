@@ -1,6 +1,7 @@
 package com.example.tvlonwer.view.ui.home
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,10 +11,12 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,10 +26,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.tvlonwer.CURRENTSELECTEDVEHICLE
 import com.example.tvlonwer.R
+import com.example.tvlonwer.model.Owner
 import com.example.tvlonwer.view.Activity_Select_Current_Vehicle
-import com.example.tvlonwer.view.AddKilometers
 import com.example.tvlonwer.view.MainScreenActivity
 import com.example.tvlonwer.view.TransferOwnership
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class HomeFragment : Fragment() {
 
@@ -38,7 +43,9 @@ class HomeFragment : Fragment() {
     private var kms : Double = 0.0
     private lateinit var kilometersView:TextView
     private var firstTime: Boolean = true
-
+    private var manual_kms = ""
+    private lateinit var textView: TextView
+    private lateinit var plateView: TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,24 +54,10 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.kms)
-        val plateView: TextView = root.findViewById(R.id.plate_no)
+        textView = root.findViewById(R.id.kms)
+        plateView = root.findViewById(R.id.plate_no)
         kilometersView = root.findViewById(R.id.kms)
-        /*if(CURRENTSELECTEDVEHICLE!=null) {
-            /* val kmsText = CURRENTSELECTEDVEHICLE.getCuurentKilometer().toString()
-             if (kmsText != null)
-                 textView.text = kmsText
-             else
-                 textView.text = "0"
-             val licenseText = CURRENTSELECTEDVEHICLE.getCuurentLicense()
-             if (licenseText != null)
-                 plateView.text = licenseText
-             else
-                 plateView.text = "0"*/
-         }else{
-             textView.text = "NOT SET"
-             plateView.text = "NOT SET"
-         }*/
+
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
 
 
@@ -76,7 +69,10 @@ class HomeFragment : Fragment() {
 
         isLocationEnabled()
 
-        if (ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(
+                this.requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this.requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -119,19 +115,54 @@ class HomeFragment : Fragment() {
         val ownershipBtn: Button
         ownershipBtn=root.findViewById(R.id.transferOwnership)
         ownershipBtn.setOnClickListener{
-            startActivity(Intent(root.context,TransferOwnership::class.java))
+            startActivity(Intent(root.context, TransferOwnership::class.java))
         }
         val selectVehicleBtn:Button
         selectVehicleBtn=root.findViewById(R.id.selectVehicle)
         selectVehicleBtn.setOnClickListener {
-            startActivity(Intent(root.context,Activity_Select_Current_Vehicle::class.java))
+            startActivity(Intent(root.context, Activity_Select_Current_Vehicle::class.java))
         }
         val selectKilometersBtn:Button
         selectKilometersBtn=root.findViewById(R.id.addKilometer)
         selectKilometersBtn.setOnClickListener {
-            startActivity(Intent(root.context, AddKilometers::class.java))
+            val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(this.activity)
+            builder.setTitle("Wrirte kilometers you see in vehicle Meter")
+
+            val input = EditText(this.activity)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+            builder.setView(input)
+
+            builder.setPositiveButton("OK",
+                DialogInterface.OnClickListener { dialog,
+                                                  which -> manual_kms = input.text.toString()
+                    updateKms()
+                })
+            builder.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+            builder.show()
         }
+
         return root
+    }
+
+    private fun updateKms() {
+        var prevKms = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getKilometers()
+        var prevKm = prevKms?.toInt()
+        var currentKms = manual_kms?.toInt()
+        textView.text = manual_kms
+        CURRENTSELECTEDVEHICLE.getVehicleUser()?.setKilometers(currentKms)
+        var change = currentKms - prevKm!!
+        var db = FirebaseFirestore.getInstance()
+        var table = db.collection("UserVehicle").get().addOnSuccessListener { result ->
+            for (documents in result) {
+                var a = documents.data
+                if(a["uid"]?.equals(Owner.uid) == true){
+                   db.collection("UserVehicle").document(documents.id).update(mapOf("vehicleKilometer" to manual_kms))
+                }
+            }
+        }
+
+
     }
 
 
