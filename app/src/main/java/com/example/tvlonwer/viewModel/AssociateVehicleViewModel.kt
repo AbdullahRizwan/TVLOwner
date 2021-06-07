@@ -26,27 +26,18 @@ class AssociateVehicleViewModel  : ViewModel()  {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     var a = document.data
-//                    list.add(
-//                        Vehicle(
-//                            document.id.toString(),
-//                            a["model"] as String?,
-//                            a["make"] as String?,
-//                            a["year"] as String?,
-//                            a["parts"] as ArrayList<Part>
-//                        )
-//
-//                    )
                     var make : String? = a["make"] as String
                     var model : String? = a["model"] as String
                     var year : String? = a["year"] as String
                     var parts : ArrayList<HashMap<String,String>> = a["parts"] as ArrayList<HashMap<String, String>>
                     var partsofVehicle: ArrayList<Part> = ArrayList()
                     for(map in parts){
-                        partsofVehicle.add(Part(map["partId"] as String,
+                        partsofVehicle.add(Part(
+                            map["partId"] as String,
                             map["name"] as String,
                             map["type"] as String,
                             map["life"] as String,
-                            map["remainingLife"] as String,
+                          "0.0",
                             map["description"] as String,
                         ))
                     }

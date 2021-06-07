@@ -1,5 +1,6 @@
 package com.example.tvlonwer.view
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -67,6 +68,7 @@ class Activity_Select_Current_Vehicle : AppCompatActivity(), Adapter_Select_Curr
         startActivity(value)*/
         if (vehicle != null) {
             CURRENTSELECTEDVEHICLE.setCurrentVehicle(vehicle)
+
             Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, MainScreenActivity::class.java));
         }
