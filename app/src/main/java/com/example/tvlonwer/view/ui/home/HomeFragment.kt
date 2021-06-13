@@ -3,6 +3,7 @@ package com.example.tvlonwer.view.ui.home
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,10 +16,7 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -27,15 +25,20 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.tvlonwer.CURRENTSELECTEDVEHICLE
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Owner
+import com.example.tvlonwer.model.Part
+import com.example.tvlonwer.model.Vehicle
+import com.example.tvlonwer.model.VehicleUser
 import com.example.tvlonwer.view.Activity_Select_Current_Vehicle
 import com.example.tvlonwer.view.MainScreenActivity
 import com.example.tvlonwer.view.TransferOwnership
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var progessBar:ProgressBar
     private lateinit var startLocation: Location
     private lateinit var endLocation: Location
     private var locationManager: LocationManager? = null
@@ -57,7 +60,7 @@ class HomeFragment : Fragment() {
         textView = root.findViewById(R.id.kms)
         plateView = root.findViewById(R.id.plate_no)
         kilometersView = root.findViewById(R.id.kms)
-
+        progessBar = root.findViewById(R.id.pbar)
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
 
 
@@ -134,7 +137,8 @@ class HomeFragment : Fragment() {
 
             builder.setPositiveButton("OK",
                 DialogInterface.OnClickListener { dialog,
-                                                  which -> manual_kms = input.text.toString()
+                                                  which ->
+                    manual_kms = input.text.toString()
                     updateKms()
                 })
             builder.setNegativeButton("Cancel",
@@ -142,7 +146,65 @@ class HomeFragment : Fragment() {
             builder.show()
         }
 
+        getVehicleFromPreference()
+
         return root
+    }
+
+    private fun getVehicleFromPreference() {
+        progessBar.visibility= View.VISIBLE
+        val preferences = this.requireActivity().getSharedPreferences("MyPref", MODE_PRIVATE)
+        val id: String? = preferences.getString(getString(R.string.cvhcl), "empty")
+        if(!(id.equals("empty",ignoreCase = true))){
+            CURRENTSELECTEDVEHICLE.setCurrentPlate(id.toString())
+            var currentUser : String? = FirebaseAuth.getInstance().uid
+            val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+            var col = db.collection("UserVehicle").get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        var a = document.data
+                        val vehicle = a["Vehicle"] as Map<String, *>
+                        if(a["uid"]?.equals(currentUser) == true){
+                            var lisenceNumber = a["lisenceNumber"] as String
+                            var uid = a["uid"] as String
+                            var vehicleKilometers = a["vehicleKilometer"].toString().toInt() as Int
+                            var vehicleId = vehicle["vehicleId"] as String
+                            var vehicleModel = vehicle["model"].toString()
+                            var vehicleMake = vehicle["make"].toString()
+                            var vehicleYear = vehicle["year"].toString()
+                            var parts : ArrayList<HashMap<String,String>> = vehicle["parts"] as ArrayList<HashMap<String, String>>
+                            var partsofVehicle: ArrayList<Part> = ArrayList()
+                            for(map in parts){
+                                partsofVehicle.add(
+                                    Part(map["partId"] as String,
+                                    map["name"] as String,
+                                    map["type"] as String,
+                                    map["life"] as String,
+                                    map["remainingLife"]as String,
+                                    map["description"] as String,
+                                )
+                                )
+                            }
+                            if(vehicleId.equals(id)){
+                                CURRENTSELECTEDVEHICLE.setCurrentVehicle(VehicleUser(lisenceNumber,uid,vehicleKilometers,vehicleId,
+                                    Vehicle(vehicleId,vehicleModel,vehicleMake,vehicleYear,partsofVehicle)))
+                                this.textView.setText( CURRENTSELECTEDVEHICLE.getCurrentKilometer().toString())
+                                this.plateView.setText(CURRENTSELECTEDVEHICLE.getCurrentLicense())
+                                progessBar.visibility= View.GONE
+                            }
+
+                        }
+                    }
+
+                }
+                .addOnFailureListener { exception ->
+
+                }
+
+        }
+
+
+
     }
 
     private fun updateKms() {

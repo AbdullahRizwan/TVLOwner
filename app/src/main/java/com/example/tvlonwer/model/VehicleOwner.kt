@@ -33,6 +33,9 @@ class  VehicleUser {
     public fun setKilometers(kms:Int){
         kilometers=kms;
     }
+    fun setPlate(no:String){
+        plateNo = no
+    }
 
 
 }

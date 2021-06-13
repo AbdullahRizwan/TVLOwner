@@ -1,27 +1,19 @@
 package com.example.tvlonwer.view
 
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.CURRENTSELECTEDVEHICLE
 import com.example.tvlonwer.R
-import com.example.tvlonwer.model.Result
-import com.example.tvlonwer.model.Vehicle
 import com.example.tvlonwer.model.VehicleUser
-
 import com.example.tvlonwer.viewModel.CurrentVehicleViewModel
-import com.google.firebase.auth.FirebaseAuth
 
 
 class Activity_Select_Current_Vehicle : AppCompatActivity(), Adapter_Select_Current_Vehicle.OnClickListener {
@@ -61,14 +53,12 @@ class Activity_Select_Current_Vehicle : AppCompatActivity(), Adapter_Select_Curr
 
     override fun onUserVehicleClick(vehicle: VehicleUser?) {
 
-
-
-              //  Toast.makeText(this, "Vehicle not Added", Toast.LENGTH_SHORT).show()
-        /*val value  = Intent(this, MainScreenActivity::class.java)
-        startActivity(value)*/
         if (vehicle != null) {
             CURRENTSELECTEDVEHICLE.setCurrentVehicle(vehicle)
-
+            val pref = applicationContext.getSharedPreferences("MyPref", MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = pref.edit()
+            editor.putString(getString(R.string.cvhcl), vehicle.getVehicle().vehicleId);
+            editor.commit()
             Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, MainScreenActivity::class.java));
         }

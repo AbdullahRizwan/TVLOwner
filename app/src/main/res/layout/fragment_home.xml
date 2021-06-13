@@ -55,6 +55,12 @@
         android:layout_height="wrap_content"
         android:text="Add Kilometer"
         android:layout_marginBottom="10dp"/>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/pbar"
+        android:layout_gravity="center"/>
 
 
 </LinearLayout>

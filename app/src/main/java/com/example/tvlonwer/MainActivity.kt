@@ -41,6 +41,9 @@ object  CURRENTSELECTEDVEHICLE
     {
         return currentVehicleUser!!.getPlateNo()
     }
+    fun setCurrentPlate(plateNo: String){
+        currentVehicleUser?.setPlate(plateNo)
+    }
     fun setCurrentKilometers(kilometers:Int){
         currentVehicleUser!!.setKilometers(kilometers)
     }
