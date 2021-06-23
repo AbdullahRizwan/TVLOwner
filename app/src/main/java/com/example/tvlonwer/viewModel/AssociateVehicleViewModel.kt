@@ -37,8 +37,9 @@ class AssociateVehicleViewModel  : ViewModel()  {
                             map["name"] as String,
                             map["type"] as String,
                             map["life"] as String,
-                          "0.0",
+                            "0.0",
                             map["description"] as String,
+
                         ))
                     }
                     list.add(Vehicle( document.id.toString(),model,make,year,partsofVehicle))
