@@ -32,12 +32,14 @@ class AssociateVehicleViewModel  : ViewModel()  {
                     var parts : ArrayList<HashMap<String,String>> = a["parts"] as ArrayList<HashMap<String, String>>
                     var partsofVehicle: ArrayList<Part> = ArrayList()
                     for(map in parts){
-                        partsofVehicle.add(Part(map["partId"] as String,
+                        partsofVehicle.add(Part(
+                            map["partId"] as String,
                             map["name"] as String,
                             map["type"] as String,
                             map["life"] as String,
-                            map["remainingLife"] as String,
-                            map["description"] as String
+                            "0.0",
+                            map["description"] as String,
+
                         ))
                     }
                     list.add(Vehicle( document.id.toString(),model,make,year,partsofVehicle))

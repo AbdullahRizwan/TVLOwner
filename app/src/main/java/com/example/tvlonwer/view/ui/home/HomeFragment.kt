@@ -1,7 +1,9 @@
 package com.example.tvlonwer.view.ui.home
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,22 +12,33 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.tvlonwer.CURRENTSELECTEDVEHICLE
 import com.example.tvlonwer.R
+import com.example.tvlonwer.model.Owner
+import com.example.tvlonwer.model.Part
+import com.example.tvlonwer.model.Vehicle
+import com.example.tvlonwer.model.VehicleUser
+import com.example.tvlonwer.view.Activity_Select_Current_Vehicle
 import com.example.tvlonwer.view.MainScreenActivity
+import com.example.tvlonwer.view.TransferOwnership
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var progessBar:ProgressBar
     private lateinit var startLocation: Location
     private lateinit var endLocation: Location
     private var locationManager: LocationManager? = null
@@ -33,7 +46,9 @@ class HomeFragment : Fragment() {
     private var kms : Double = 0.0
     private lateinit var kilometersView:TextView
     private var firstTime: Boolean = true
-
+    private var manual_kms = ""
+    private lateinit var textView: TextView
+    private lateinit var plateView: TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,10 +57,13 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.kms)
+        textView = root.findViewById(R.id.kms)
+        plateView = root.findViewById(R.id.plate_no)
         kilometersView = root.findViewById(R.id.kms)
+        progessBar = root.findViewById(R.id.pbar)
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+
+
         })
         mContext = this.activity
         locationManager = this.activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
@@ -54,7 +72,10 @@ class HomeFragment : Fragment() {
 
         isLocationEnabled()
 
-        if (ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(
+                this.requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this.requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -78,8 +99,132 @@ class HomeFragment : Fragment() {
             5.0.toFloat(),
             locationListenerGPS
         )
+            if(CURRENTSELECTEDVEHICLE.getVehicleUser()!=null) {
+             val kmsText = CURRENTSELECTEDVEHICLE.getCurrentKilometer().toString()
+             if (kmsText != null)
+                 textView.text = kmsText
+             else
+                 textView.text = "0 " +kms
+             val licenseText = CURRENTSELECTEDVEHICLE.getCurrentLicense()
+             if (licenseText != null)
+                 plateView.text = licenseText
+             else
+                 plateView.text = "0"
+
+        }else {
+                textView.text = "NOT SET"
+                plateView.text = "NOT SET"
+            }
+        val ownershipBtn: Button
+        ownershipBtn=root.findViewById(R.id.transferOwnership)
+        ownershipBtn.setOnClickListener{
+            startActivity(Intent(root.context, TransferOwnership::class.java))
+        }
+        val selectVehicleBtn:Button
+        selectVehicleBtn=root.findViewById(R.id.selectVehicle)
+        selectVehicleBtn.setOnClickListener {
+            startActivity(Intent(root.context, Activity_Select_Current_Vehicle::class.java))
+        }
+        val selectKilometersBtn:Button
+        selectKilometersBtn=root.findViewById(R.id.addKilometer)
+        selectKilometersBtn.setOnClickListener {
+            val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(this.activity)
+            builder.setTitle("Wrirte kilometers you see in vehicle Meter")
+
+            val input = EditText(this.activity)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+            builder.setView(input)
+
+            builder.setPositiveButton("OK",
+                DialogInterface.OnClickListener { dialog,
+                                                  which ->
+                    manual_kms = input.text.toString()
+                    updateKms()
+                })
+            builder.setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+            builder.show()
+        }
+
+        getVehicleFromPreference()
 
         return root
+    }
+
+    private fun getVehicleFromPreference() {
+        progessBar.visibility= View.VISIBLE
+        val preferences = this.requireActivity().getSharedPreferences("MyPref", MODE_PRIVATE)
+        val id: String? = preferences.getString(getString(R.string.cvhcl), "empty")
+        if(!(id.equals("empty",ignoreCase = true))){
+            CURRENTSELECTEDVEHICLE.setCurrentPlate(id.toString())
+            var currentUser : String? = FirebaseAuth.getInstance().uid
+            val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+            var col = db.collection("UserVehicle").get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        var a = document.data
+                        val vehicle = a["Vehicle"] as Map<String, *>
+                        if(a["uid"]?.equals(currentUser) == true){
+                            var lisenceNumber = a["lisenceNumber"] as String
+                            var uid = a["uid"] as String
+                            var vehicleKilometers = a["vehicleKilometer"].toString().toInt() as Int
+                            var vehicleId = vehicle["vehicleId"] as String
+                            var vehicleModel = vehicle["model"].toString()
+                            var vehicleMake = vehicle["make"].toString()
+                            var vehicleYear = vehicle["year"].toString()
+                            var parts : ArrayList<HashMap<String,String>> = vehicle["parts"] as ArrayList<HashMap<String, String>>
+                            var partsofVehicle: ArrayList<Part> = ArrayList()
+                            for(map in parts){
+                                partsofVehicle.add(
+                                    Part(map["partId"] as String,
+                                    map["name"] as String,
+                                    map["type"] as String,
+                                    map["life"] as String,
+                                    map["remainingLife"]as String,
+                                    map["description"] as String,
+                                )
+                                )
+                            }
+                            if(vehicleId.equals(id)){
+                                CURRENTSELECTEDVEHICLE.setCurrentVehicle(VehicleUser(lisenceNumber,uid,vehicleKilometers,vehicleId,
+                                    Vehicle(vehicleId,vehicleModel,vehicleMake,vehicleYear,partsofVehicle)))
+                                this.textView.setText( CURRENTSELECTEDVEHICLE.getCurrentKilometer().toString())
+                                this.plateView.setText(CURRENTSELECTEDVEHICLE.getCurrentLicense())
+                                progessBar.visibility= View.GONE
+                            }
+
+                        }
+                    }
+
+                }
+                .addOnFailureListener { exception ->
+
+                }
+
+        }
+
+
+
+    }
+
+    private fun updateKms() {
+        var prevKms = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getKilometers()
+        var prevKm = prevKms?.toInt()
+        var currentKms = manual_kms?.toInt()
+        textView.text = manual_kms
+        CURRENTSELECTEDVEHICLE.getVehicleUser()?.setKilometers(currentKms)
+        var change = currentKms - prevKm!!
+        var db = FirebaseFirestore.getInstance()
+        var table = db.collection("UserVehicle").get().addOnSuccessListener { result ->
+            for (documents in result) {
+                var a = documents.data
+                if(a["uid"]?.equals(Owner.uid) == true){
+                   db.collection("UserVehicle").document(documents.id).update(mapOf("vehicleKilometer" to manual_kms))
+                }
+            }
+        }
+
+
     }
 
 

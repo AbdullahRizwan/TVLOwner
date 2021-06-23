@@ -56,4 +56,26 @@ class Login : AppCompatActivity() {
         val value  = Intent(this, SignUp::class.java)
         startActivity(value)
     }
+    fun forgetPassword(view: View){
+        val value=Intent(this,ForgetPassword::class.java)
+        startActivity(value)
+        /*val email = findViewById<EditText>(R.id.email);
+        if(email.text.contains("@") ){
+                FirebaseAuth.getInstance().sendPasswordResetEmail(email.text.toString())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("Login", "Email sent.")
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "Failed to send reset email!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+        }else{
+            if(!email.text.contains("@"))
+                email.error = "Incorrect email format"
+*/
+        }
 }
