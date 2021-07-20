@@ -13,7 +13,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.tvlonwer.CURRENTSELECTEDVEHICLE
@@ -62,6 +63,7 @@ class HomeFragment : Fragment() {
         plateView = root.findViewById(R.id.plate_no)
         kilometersView = root.findViewById(R.id.kms)
         progessBar = root.findViewById(R.id.pbar)
+
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
 
 
@@ -121,7 +123,7 @@ class HomeFragment : Fragment() {
         val ownershipBtn: Button
         ownershipBtn=root.findViewById(R.id.transferOwnership)
         ownershipBtn.setOnClickListener{
-            startActivity(Intent(root.context, TransferOwnership::class.java))
+            transferOwnership()
         }
         val selectVehicleBtn:Button
         selectVehicleBtn=root.findViewById(R.id.selectVehicle)
@@ -154,11 +156,17 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as MainScreenActivity?)!!
+            .setActionBarTitle("Home")
+    }
+
     private fun getVehicleFromPreference() {
         progessBar.visibility= View.VISIBLE
         val preferences = this.requireActivity().getSharedPreferences("MyPref", MODE_PRIVATE)
         val id: String? = preferences.getString(getString(R.string.cvhcl), "empty")
-        if(!(id.equals("empty",ignoreCase = true))){
+        if(!(id.equals("empty", ignoreCase = true))){
             CURRENTSELECTEDVEHICLE.setCurrentPlate(id.toString())
             var currentUser : String? = FirebaseAuth.getInstance().uid
             val db: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -175,23 +183,36 @@ class HomeFragment : Fragment() {
                             var vehicleModel = vehicle["model"].toString()
                             var vehicleMake = vehicle["make"].toString()
                             var vehicleYear = vehicle["year"].toString()
-                            var parts : ArrayList<HashMap<String,String>> = vehicle["parts"] as ArrayList<HashMap<String, String>>
+                            var parts : ArrayList<HashMap<String, String>> = vehicle["parts"] as ArrayList<HashMap<String, String>>
                             var partsofVehicle: ArrayList<Part> = ArrayList()
                             for(map in parts){
                                 partsofVehicle.add(
-                                    Part(map["partId"] as String,
-                                    map["name"] as String,
-                                    map["type"] as String,
-                                    map["life"] as String,
-                                    map["remainingLife"]as String,
-                                    map["description"] as String,
-                                )
+                                    Part(
+                                        map["partId"] as String,
+                                        map["name"] as String,
+                                        map["type"] as String,
+                                        map["life"] as String,
+                                        map["remainingLife"] as String,
+                                        map["description"] as String,
+                                    )
                                 )
                             }
                             if(vehicleId.equals(id)){
-                                CURRENTSELECTEDVEHICLE.setCurrentVehicle(VehicleUser(lisenceNumber,uid,vehicleKilometers,vehicleId,
-                                    Vehicle(vehicleId,vehicleModel,vehicleMake,vehicleYear,partsofVehicle)))
-                                this.textView.setText( CURRENTSELECTEDVEHICLE.getCurrentKilometer().toString())
+                                CURRENTSELECTEDVEHICLE.setCurrentVehicle(
+                                    VehicleUser(
+                                        lisenceNumber, uid, vehicleKilometers, vehicleId,
+                                        Vehicle(
+                                            vehicleId,
+                                            vehicleModel,
+                                            vehicleMake,
+                                            vehicleYear,
+                                            partsofVehicle
+                                        )
+                                    )
+                                )
+                                this.textView.setText(
+                                    CURRENTSELECTEDVEHICLE.getCurrentKilometer().toString()
+                                )
                                 this.plateView.setText(CURRENTSELECTEDVEHICLE.getCurrentLicense())
                                 progessBar.visibility= View.GONE
                             }
@@ -210,7 +231,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun updateKms(manual_kms:Float) {
+    private fun updateKms(manual_kms: Float) {
         var prevKms = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getKilometers()
         var prevKm = prevKms?.toFloat()
         var currentKms = manual_kms
@@ -237,9 +258,15 @@ class HomeFragment : Fragment() {
         var table = db.collection("UserVehicle").get().addOnSuccessListener { result ->
             for (documents in result) {
                 var a = documents.data
-                if(a["uid"]?.equals(Owner.uid) == true && a["lisenceNumber"]?.equals(CURRENTSELECTEDVEHICLE?.getCurrentLicense()) == true){
+                if(a["uid"]?.equals(Owner.uid) == true && a["lisenceNumber"]?.equals(
+                        CURRENTSELECTEDVEHICLE?.getCurrentLicense()
+                    ) == true){
                     db.collection("UserVehicle").document(documents.id).update(mapOf("vehicleKilometer" to manual_kms))
-                    db.collection("UserVehicle").document(documents.id).update(mapOf("Vehicle" to CURRENTSELECTEDVEHICLE.getVehicleUser()!!.getVehicle()))
+                    db.collection("UserVehicle").document(documents.id).update(
+                        mapOf(
+                            "Vehicle" to CURRENTSELECTEDVEHICLE.getVehicleUser()!!.getVehicle()
+                        )
+                    )
                 }
             }
         }
@@ -266,8 +293,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updatePartsLife(newKms: Float){
-        var  parts = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getVehicle()?.parts
+    private fun transferOwnership(){
+
+        val fragmentManager: FragmentManager? = fragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment, TransferOwnership())
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
     var locationListenerGPS: LocationListener = object : LocationListener {
@@ -283,7 +315,7 @@ class HomeFragment : Fragment() {
 
             var distance = startLocation.distanceTo(endLocation)
             kms = CURRENTSELECTEDVEHICLE.getCurrentKilometer().toDouble()
-            Toast.makeText(mContext,""+kms,Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext, "" + kms, Toast.LENGTH_SHORT).show()
             var newKms= (distance/1000)
             kms +=  newKms
 
