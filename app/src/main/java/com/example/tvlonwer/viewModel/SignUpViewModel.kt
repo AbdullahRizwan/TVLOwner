@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.tvlonwer.model.Result
+import com.google.firebase.FirebaseApp
 
 class SignUpViewModel : ViewModel() {
     private lateinit var auth: FirebaseAuth
@@ -21,6 +22,8 @@ class SignUpViewModel : ViewModel() {
     val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
 
+
+
     /**
      * if sign up is success add the record into
      * owner table.
@@ -28,8 +31,9 @@ class SignUpViewModel : ViewModel() {
     public fun createAccount(
         email: String, password: String, name: String,
         cnic: String, phone: String, _activity: Activity
-    ) {
+    ):Boolean {
 
+        var flag = false
         auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(_activity) { task ->
@@ -47,20 +51,21 @@ class SignUpViewModel : ViewModel() {
                     db.collection("Owner").document(auth.currentUser.uid).set(data).addOnSuccessListener { documentReference ->
                         _result.value = Result.Success<String>(documentReference.toString())
                         Log.d("Result", documentReference.toString())
+                        flag = true
                     }.addOnFailureListener { e ->
                         _result.value = Result.Error(e)
                         Log.d("Result", e.toString())
+                        flag = false
                     }
 
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("TAG", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(_activity, "Error Signing Up", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(_activity, "Error Signing Up", Toast.LENGTH_LONG).show()
                 }
+
             }
-
-
-
+        return flag
     }
 
 

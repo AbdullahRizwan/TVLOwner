@@ -33,7 +33,7 @@ object  CURRENTSELECTEDVEHICLE
     fun setCurrentVehicle(vehicle: VehicleUser){
         currentVehicleUser=vehicle
     }
-    fun getCurrentKilometer() :Int
+    fun getCurrentKilometer() :Float
     {
         return currentVehicleUser!!.getKilometers()
     }
@@ -44,7 +44,7 @@ object  CURRENTSELECTEDVEHICLE
     fun setCurrentPlate(plateNo: String){
         currentVehicleUser?.setPlate(plateNo)
     }
-    fun setCurrentKilometers(kilometers:Int){
+    fun setCurrentKilometers(kilometers:Float){
         currentVehicleUser!!.setKilometers(kilometers)
     }
 }

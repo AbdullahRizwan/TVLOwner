@@ -22,11 +22,7 @@ class ForgetPasswordViewModel : ViewModel() {
                         data.postValue(true)
 
                     } else {
-                        /*val show: Any = Toast.makeText(
-                            this,
-                            "Failed to send reset email!",
-                            Toast.LENGTH_SHORT
-                        ).show()*/
+
                         Log.d("Forget", "Email not sent.")
                         data.postValue(false)
                     }

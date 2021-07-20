@@ -3,14 +3,14 @@ package com.example.tvlonwer.model
 class  VehicleUser {
     private var  plateNo : String = ""
     private var  vehicleUserId: String =""
-    private var  kilometers: Int = 0
+    private var  kilometers: Float = 0.0f
     private var vehicleId: String=""
     private var  vehicle : Vehicle
 
     constructor(
         plateNo: String,
         vehicleUserId: String,
-        kilometers: Int,
+        kilometers: Float,
         vehicleId: String,
         vehicle: Vehicle
     ) {
@@ -27,10 +27,10 @@ class  VehicleUser {
     public fun getPlateNo(): String {
         return this.plateNo;
     }
-    public fun getKilometers():Int{
+    public fun getKilometers():Float{
         return this.kilometers;
     }
-    public fun setKilometers(kms:Int){
+    public fun setKilometers(kms:Float){
         kilometers=kms;
     }
     fun setPlate(no:String){

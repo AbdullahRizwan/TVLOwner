@@ -17,9 +17,8 @@ import com.example.tvlonwer.model.Part;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class adapterShowParts extends RecyclerView.Adapter<adapterShowParts.ViewHolder> implements Filterable {
+public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.ViewHolder> implements Filterable {
     private ArrayList<Part> data;
     protected ArrayList<Part> temp;
     private Context c;

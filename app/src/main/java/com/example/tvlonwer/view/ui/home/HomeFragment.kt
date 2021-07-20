@@ -13,6 +13,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -101,8 +102,10 @@ class HomeFragment : Fragment() {
         )
             if(CURRENTSELECTEDVEHICLE.getVehicleUser()!=null) {
              val kmsText = CURRENTSELECTEDVEHICLE.getCurrentKilometer().toString()
-             if (kmsText != null)
+             if (kmsText != null) {
                  textView.text = kmsText
+                 kms = kmsText.toDouble()
+             }
              else
                  textView.text = "0 " +kms
              val licenseText = CURRENTSELECTEDVEHICLE.getCurrentLicense()
@@ -139,7 +142,7 @@ class HomeFragment : Fragment() {
                 DialogInterface.OnClickListener { dialog,
                                                   which ->
                     manual_kms = input.text.toString()
-                    updateKms()
+                    updateKms(manual_kms.toFloat())
                 })
             builder.setNegativeButton("Cancel",
                 DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
@@ -167,7 +170,7 @@ class HomeFragment : Fragment() {
                         if(a["uid"]?.equals(currentUser) == true){
                             var lisenceNumber = a["lisenceNumber"] as String
                             var uid = a["uid"] as String
-                            var vehicleKilometers = a["vehicleKilometer"].toString().toInt() as Int
+                            var vehicleKilometers = a["vehicleKilometer"].toString().toFloat() as Float
                             var vehicleId = vehicle["vehicleId"] as String
                             var vehicleModel = vehicle["model"].toString()
                             var vehicleMake = vehicle["make"].toString()
@@ -207,26 +210,42 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun updateKms() {
+    private fun updateKms(manual_kms:Float) {
         var prevKms = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getKilometers()
-        var prevKm = prevKms?.toInt()
-        var currentKms = manual_kms?.toInt()
-        textView.text = manual_kms
+        var prevKm = prevKms?.toFloat()
+        var currentKms = manual_kms
+        var diff = prevKm!! - currentKms
+        textView.text = manual_kms.toString()
         CURRENTSELECTEDVEHICLE.getVehicleUser()?.setKilometers(currentKms)
+        var vehicle = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getVehicle()
+        var parts = vehicle!!.parts
+        if (parts != null) {
+            for(i in 0..parts?.size-1){
+                var partLife = parts[i]?.remainingLife?.toFloat()
+                partLife = partLife?.plus((diff.toFloat()))
+                if(partLife!!.compareTo(0) > 0 ){
+                    parts[i]?.remainingLife = partLife.toString()
+                }
+                else{
+                    parts[i]?.remainingLife = ""+0.0
+                }
+
+            }
+        }
         var change = currentKms - prevKm!!
         var db = FirebaseFirestore.getInstance()
         var table = db.collection("UserVehicle").get().addOnSuccessListener { result ->
             for (documents in result) {
                 var a = documents.data
-                if(a["uid"]?.equals(Owner.uid) == true){
-                   db.collection("UserVehicle").document(documents.id).update(mapOf("vehicleKilometer" to manual_kms))
+                if(a["uid"]?.equals(Owner.uid) == true && a["lisenceNumber"]?.equals(CURRENTSELECTEDVEHICLE?.getCurrentLicense()) == true){
+                    db.collection("UserVehicle").document(documents.id).update(mapOf("vehicleKilometer" to manual_kms))
+                    db.collection("UserVehicle").document(documents.id).update(mapOf("Vehicle" to CURRENTSELECTEDVEHICLE.getVehicleUser()!!.getVehicle()))
                 }
             }
         }
 
 
     }
-
 
     private fun isLocationEnabled() {
         if (!locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER)!!) {
@@ -247,21 +266,30 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun updatePartsLife(newKms: Float){
+        var  parts = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getVehicle()?.parts
+    }
+
     var locationListenerGPS: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             if(firstTime){
                 endLocation =location
                 firstTime =  false
+
                 return
             }
             startLocation = endLocation
             endLocation =location
 
             var distance = startLocation.distanceTo(endLocation)
-            kms +=(distance/1000)
-            kilometersView.text = ""+kms
-            val msg = "Distance: " + distance
-            Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show()
+            kms = CURRENTSELECTEDVEHICLE.getCurrentKilometer().toDouble()
+            Toast.makeText(mContext,""+kms,Toast.LENGTH_SHORT).show()
+            var newKms= (distance/1000)
+            kms +=  newKms
+
+            //CURRENTSELECTEDVEHICLE.setCurrentKilometers(kms.toFloat())
+            kilometersView.text = ""+kms.toFloat()
+            updateKms(kms.toFloat())
         }
 
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}

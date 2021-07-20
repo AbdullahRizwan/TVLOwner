@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding= "10dp"
     tools:context=".view.ui.home.HomeFragment">
 
     <TextView
@@ -53,7 +54,7 @@
         android:id="@+id/addKilometer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Kilometer"
+        android:text="Update Kilometer"
         android:layout_marginBottom="10dp"/>
     <ProgressBar
         android:layout_width="wrap_content"

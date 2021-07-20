@@ -1,9 +1,7 @@
 package com.example.tvlonwer.view
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -13,7 +11,7 @@ import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Part
 import com.example.tvlonwer.model.Vehicle
 
-class showParts : AppCompatActivity(), adapterShowParts.OnClickListener {
+class showParts : AppCompatActivity(), Adapter_ShowParts.OnClickListener {
     private lateinit var vehicle: Vehicle
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +26,7 @@ class showParts : AppCompatActivity(), adapterShowParts.OnClickListener {
             finish()
         }
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPart)
-        var recyclerViewAdapter = adapterShowParts()
+        var recyclerViewAdapter = Adapter_ShowParts()
         recyclerViewAdapter.setData(vehicle.parts,this,this)
         recyclerView.layoutManager =  LinearLayoutManager(this)
         recyclerView.adapter = recyclerViewAdapter

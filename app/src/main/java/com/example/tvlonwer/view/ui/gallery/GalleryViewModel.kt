@@ -27,7 +27,7 @@ class GalleryViewModel : ViewModel() {
                     if(a["uid"]?.equals(Owner.uid) == true){
                        var lisenceNumber = a["lisenceNumber"] as String
                         var uid = a["uid"] as String
-                        var vehicleKilometers = a["vehicleKilometer"].toString().toInt() as Int
+                        var vehicleKilometers = a["vehicleKilometer"].toString().toFloat() as Float
                         var vehicleId = vehicle["vehicleId"] as String
                         var vehicleModel = vehicle["model"].toString()
                         var vehicleMake = vehicle["make"].toString()

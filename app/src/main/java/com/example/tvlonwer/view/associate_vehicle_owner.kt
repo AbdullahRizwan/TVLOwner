@@ -19,7 +19,7 @@ import com.example.tvlonwer.viewModel.AssociateVehicleViewModel
 import com.example.tvlonwer.model.Result
 
 
-class associate_vehicle_owner : AppCompatActivity(), adapterSelectVehicle.OnClickListener {
+class associate_vehicle_owner : AppCompatActivity(), Adapter_SelectVehicle.OnClickListener {
     private lateinit var viewViewModel: AssociateVehicleViewModel
     private lateinit var m_Text: String
     private lateinit var l_number: String
@@ -31,7 +31,8 @@ class associate_vehicle_owner : AppCompatActivity(), adapterSelectVehicle.OnClic
         setContentView(R.layout.activity_associate_vehicle_owner)
 
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewAssociateVehicle)
-        val recyclerViewAdapter = adapterSelectVehicle()
+        val recyclerViewAdapter =
+            Adapter_SelectVehicle()
         viewViewModel = AssociateVehicleViewModel()
         viewViewModel.data.observe(this, Observer {
 

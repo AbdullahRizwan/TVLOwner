@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class adapterSelectVehicle extends RecyclerView.Adapter<adapterSelectVehicle.ViewHolder> implements Filterable {
+public class Adapter_SelectVehicle extends RecyclerView.Adapter<Adapter_SelectVehicle.ViewHolder> implements Filterable {
     private ArrayList<Vehicle> data;
     protected ArrayList<Vehicle> temp;
     private Context c;

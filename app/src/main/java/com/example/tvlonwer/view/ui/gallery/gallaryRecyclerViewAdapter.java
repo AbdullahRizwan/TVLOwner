@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tvlonwer.R;
 import com.example.tvlonwer.model.Vehicle;
 import com.example.tvlonwer.model.VehicleUser;
-import com.example.tvlonwer.view.adapterSelectVehicle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class gallaryRecyclerViewAdapter extends RecyclerView.Adapter<gallaryRecy
         if(temp.size() > position) {
             holder.make.setText(temp.get(position).getVehicle().getMake());
             holder.model.setText(temp.get(position).getVehicle().getModel());
-            holder.year.setText(temp.get(position).getVehicle().getYear());
+            holder.year.setText(temp.get(position).getPlateNo());
         }
         else {
             Toast.makeText(c,"Error", Toast.LENGTH_SHORT).show();
