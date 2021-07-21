@@ -14,7 +14,7 @@
             android:title="Vehicle Manager" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:icon="@drawable/ic_baseline_notifications_24"
+            android:title="Notifications" />
     </group>
 </menu>

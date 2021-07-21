@@ -232,6 +232,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateKms(manual_kms: Float) {
+        var notificationFlag = false
         var prevKms = CURRENTSELECTEDVEHICLE.getVehicleUser()?.getKilometers()
         var prevKm = prevKms?.toFloat()
         var currentKms = manual_kms
@@ -244,11 +245,12 @@ class HomeFragment : Fragment() {
             for(i in 0..parts?.size-1){
                 var partLife = parts[i]?.remainingLife?.toFloat()
                 partLife = partLife?.plus((diff.toFloat()))
-                if(partLife!!.compareTo(0) > 0 ){
+                if(partLife!!.compareTo(0) > 1 ){
                     parts[i]?.remainingLife = partLife.toString()
                 }
                 else{
                     parts[i]?.remainingLife = ""+0.0
+                    notificationFlag = true
                 }
 
             }
@@ -270,7 +272,15 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
+        if(notificationFlag ==true){
+            val builder = AlertDialog.Builder(requireActivity())
+            builder.setMessage("Some parts expired please check Notification")
+                .setCancelable(false)
+                .setPositiveButton("OK") { dialog, id ->
+                }
+            val alert = builder.create()
+            alert.show()
+        }
 
     }
 

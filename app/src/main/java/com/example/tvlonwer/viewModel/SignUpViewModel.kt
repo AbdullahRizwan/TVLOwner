@@ -18,10 +18,7 @@ class SignUpViewModel : ViewModel() {
     private lateinit var auth: FirebaseAuth
     private val _result = MutableLiveData<Result<String>>()
     val result: LiveData<Result<String>> = _result
-
     val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-
-
 
 
     /**
