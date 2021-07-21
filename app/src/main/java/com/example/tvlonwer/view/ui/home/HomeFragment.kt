@@ -245,7 +245,7 @@ class HomeFragment : Fragment() {
             for(i in 0..parts?.size-1){
                 var partLife = parts[i]?.remainingLife?.toFloat()
                 partLife = partLife?.plus((diff.toFloat()))
-                if(partLife!!.compareTo(0) > 1 ){
+                if(partLife!!.compareTo(1) > 0 ){
                     parts[i]?.remainingLife = partLife.toString()
                 }
                 else{
