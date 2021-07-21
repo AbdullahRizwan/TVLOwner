@@ -28,7 +28,7 @@ class SlideshowFragment : Fragment() ,Adapter_ShowParts.OnClickListener{
             ViewModelProvider(this).get(SlideshowViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
 
-        var recyclerView = root.findViewById<RecyclerView>(R.id.recyclerViewPart)
+        var recyclerView = root.findViewById<RecyclerView>(R.id.expiredParts)
         var recyclerViewAdapter = Adapter_ShowParts()
         recyclerViewAdapter.setData(slideshowViewModel.getParts(),requireContext(),this)
         recyclerView.layoutManager =  LinearLayoutManager(requireContext())
