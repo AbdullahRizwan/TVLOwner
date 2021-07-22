@@ -272,7 +272,7 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        if(notificationFlag ==true){
+        if(CURRENTSELECTEDVEHICLE.isNotified() ==false){
             val builder = AlertDialog.Builder(requireActivity())
             builder.setMessage("Some parts expired please check Notification")
                 .setCancelable(false)
@@ -280,6 +280,7 @@ class HomeFragment : Fragment() {
                 }
             val alert = builder.create()
             alert.show()
+            CURRENTSELECTEDVEHICLE.notified()
         }
 
     }

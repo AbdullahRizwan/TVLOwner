@@ -23,6 +23,16 @@ class MainActivity : AppCompatActivity() {
 object  CURRENTSELECTEDVEHICLE
 {
     private var currentVehicleUser: VehicleUser? =null
+    private var notified = false
+
+    fun isNotified():Boolean{
+        return notified;
+    }
+
+    fun notified(){
+        notified = true
+    }
+
     init
     {
         println("Singleton class invoked.")
