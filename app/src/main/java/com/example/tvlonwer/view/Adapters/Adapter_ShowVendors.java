@@ -97,7 +97,7 @@ public class Adapter_ShowVendors extends RecyclerView.Adapter<Adapter_ShowVendor
                         }
                     }
                     if(longitude != 0.0 && latitude!= 0.0) {
-                        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+                        String uri = "http://maps.google.com/maps?"+ "&daddr=" + latitude + "," + longitude;
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                         c.startActivity(intent);
                     }
