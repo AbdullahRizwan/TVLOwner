@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.CURRENTSELECTEDVEHICLE
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.VehicleUser
+import com.example.tvlonwer.view.Adapters.Adapter_Select_Current_Vehicle
 import com.example.tvlonwer.viewModel.CurrentVehicleViewModel
 
 
@@ -28,7 +29,8 @@ class Activity_Select_Current_Vehicle : AppCompatActivity(), Adapter_Select_Curr
         setContentView(R.layout.activity__select__current__vehicle)
 
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCurrentVehicle)
-        val recyclerViewAdapter = Adapter_Select_Current_Vehicle()
+        val recyclerViewAdapter =
+            Adapter_Select_Current_Vehicle()
         viewViewModel = CurrentVehicleViewModel()
 
         viewViewModel.data.observe(this, Observer {

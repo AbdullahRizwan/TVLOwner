@@ -50,18 +50,27 @@
         android:text="Transfer Ownership"
         android:layout_marginBottom="10dp"/>
 
-    <Button
-        android:id="@+id/addKilometer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Update Kilometer"
-        android:layout_marginBottom="10dp"/>
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:id="@+id/pbar"
         android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/addKilometer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Kilometer"
+        android:layout_marginBottom="10dp"/>
+
+
+    <Button
+        android:id="@+id/showVendords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vendors"
+        android:layout_marginBottom="10dp"/>
 
 
 </LinearLayout>

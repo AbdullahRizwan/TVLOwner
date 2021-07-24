@@ -32,6 +32,7 @@ import com.example.tvlonwer.model.Vehicle
 import com.example.tvlonwer.model.VehicleUser
 import com.example.tvlonwer.view.Activity_Select_Current_Vehicle
 import com.example.tvlonwer.view.MainScreenActivity
+import com.example.tvlonwer.view.ShowVendors
 import com.example.tvlonwer.view.TransferOwnership
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -120,6 +121,15 @@ class HomeFragment : Fragment() {
                 textView.text = "NOT SET"
                 plateView.text = "NOT SET"
             }
+
+        root.findViewById<Button>(R.id.showVendords).setOnClickListener{
+            val fragmentManager: FragmentManager? = fragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+            fragmentTransaction.replace(R.id.nav_host_fragment, ShowVendors())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
         val ownershipBtn: Button
         ownershipBtn=root.findViewById(R.id.transferOwnership)
         ownershipBtn.setOnClickListener{

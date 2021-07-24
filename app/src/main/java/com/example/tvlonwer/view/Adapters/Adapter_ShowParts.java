@@ -1,4 +1,4 @@
-package com.example.tvlonwer.view;
+package com.example.tvlonwer.view.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -27,7 +27,7 @@ public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.show_recycler_view_showparts, parent, false);
+        View view = inflater.inflate(R.layout.single_show_recycler_view_showparts, parent, false);
         return new ViewHolder(view,myListener);
     }
 

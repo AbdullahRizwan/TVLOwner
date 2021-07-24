@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Part
 import com.example.tvlonwer.model.Vehicle
+import com.example.tvlonwer.view.Adapters.Adapter_ShowParts
 
 class showParts : AppCompatActivity(), Adapter_ShowParts.OnClickListener {
     private lateinit var vehicle: Vehicle
@@ -26,7 +27,8 @@ class showParts : AppCompatActivity(), Adapter_ShowParts.OnClickListener {
             finish()
         }
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPart)
-        var recyclerViewAdapter = Adapter_ShowParts()
+        var recyclerViewAdapter =
+            Adapter_ShowParts()
         recyclerViewAdapter.setData(vehicle.parts,this,this)
         recyclerView.layoutManager =  LinearLayoutManager(this)
         recyclerView.adapter = recyclerViewAdapter

@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Part
-import com.example.tvlonwer.view.Adapter_ShowParts
+import com.example.tvlonwer.view.Adapters.Adapter_ShowParts
 
-class SlideshowFragment : Fragment() ,Adapter_ShowParts.OnClickListener{
+class SlideshowFragment : Fragment() ,
+    Adapter_ShowParts.OnClickListener{
 
     private lateinit var slideshowViewModel: SlideshowViewModel
     private lateinit var data:ArrayList<Part?>
@@ -29,7 +28,8 @@ class SlideshowFragment : Fragment() ,Adapter_ShowParts.OnClickListener{
         val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
 
         var recyclerView = root.findViewById<RecyclerView>(R.id.expiredParts)
-        var recyclerViewAdapter = Adapter_ShowParts()
+        var recyclerViewAdapter =
+            Adapter_ShowParts()
         recyclerViewAdapter.setData(slideshowViewModel.getParts(),requireContext(),this)
         recyclerView.layoutManager =  LinearLayoutManager(requireContext())
         recyclerView.adapter = recyclerViewAdapter

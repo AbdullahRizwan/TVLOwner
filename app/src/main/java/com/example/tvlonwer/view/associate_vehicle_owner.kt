@@ -17,6 +17,7 @@ import com.example.tvlonwer.model.Vehicle
 import com.example.tvlonwer.model.VehicleUser
 import com.example.tvlonwer.viewModel.AssociateVehicleViewModel
 import com.example.tvlonwer.model.Result
+import com.example.tvlonwer.view.Adapters.Adapter_SelectVehicle
 
 
 class associate_vehicle_owner : AppCompatActivity(), Adapter_SelectVehicle.OnClickListener {

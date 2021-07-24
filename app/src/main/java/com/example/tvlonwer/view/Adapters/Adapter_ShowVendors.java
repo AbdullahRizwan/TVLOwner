@@ -1,4 +1,5 @@
-package com.example.tvlonwer.view;
+package com.example.tvlonwer.view.Adapters;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,33 +13,33 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.tvlonwer.R;
-import com.example.tvlonwer.model.Vehicle;
-import com.example.tvlonwer.model.VehicleUser;
 
-import java.text.BreakIterator;
+import com.example.tvlonwer.R;
+import com.example.tvlonwer.model.Vendor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-public class Adapter_Select_Current_Vehicle extends RecyclerView.Adapter<Adapter_Select_Current_Vehicle.ViewHolder> implements Filterable {
-    private ArrayList<VehicleUser> data;
-    protected ArrayList<VehicleUser> temp;
+
+public class Adapter_ShowVendors extends RecyclerView.Adapter<Adapter_ShowVendors.ViewHolder> implements Filterable {
+    private ArrayList<Vendor> data;
+    protected ArrayList<Vendor> temp;
     private Context c;
-    private Adapter_Select_Current_Vehicle.OnClickListener myListener;
+    private Adapter_ShowVendors.OnClickListener myListener;
 
     @Override
-    public Adapter_Select_Current_Vehicle.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Adapter_ShowVendors.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.single_name_licenseno, parent, false);
-        return new Adapter_Select_Current_Vehicle.ViewHolder(view,myListener);
+        View view = inflater.inflate(R.layout.single_vendor_view, parent, false);
+        return new Adapter_ShowVendors.ViewHolder(view,myListener);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull Adapter_Select_Current_Vehicle.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Adapter_ShowVendors.ViewHolder holder, int position) {
         if(temp.size() > position) {
-            holder.plateNo.setText(temp.get(position).getPlateNo());
-            /*holder.kilometers.setText(temp.get(position).getKilometers());*/
+            holder.name.setText(temp.get(position).getName());
+            holder.phone.setText(temp.get(position).getPhone());
+            holder.address.setText(temp.get(position).getAddress());
         }
         else {
             Toast.makeText(c,"Error", Toast.LENGTH_SHORT).show();
@@ -50,37 +51,34 @@ public class Adapter_Select_Current_Vehicle extends RecyclerView.Adapter<Adapter
         return temp.size();
     }
 
-    public void setData(MutableLiveData<ArrayList<VehicleUser> >d, Context context, Adapter_Select_Current_Vehicle.OnClickListener click) {
-        data=d.getValue();
+    public void setData(MutableLiveData<ArrayList<Vendor>> d, Context context, Adapter_ShowVendors.OnClickListener click) {
+        data = d.getValue();
         temp = new ArrayList<>();
         temp.addAll(Objects.requireNonNull(d.getValue()));
         c = context;
-        myListener = (OnClickListener) click;
+        myListener = click;
     }
 
-
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView kilometers;
-        TextView plateNo;
+        TextView name;
+        TextView phone;
+        TextView address;
+        Adapter_ShowVendors.OnClickListener clistener;
 
-        Adapter_Select_Current_Vehicle.OnClickListener clistener;
-
-        public ViewHolder(@NonNull View itemView, Adapter_Select_Current_Vehicle.OnClickListener myListener) {
+        public ViewHolder(@NonNull View itemView, Adapter_ShowVendors.OnClickListener myListener) {
             super(itemView);
-            plateNo = itemView.findViewById(R.id.plate_no);
-            kilometers=itemView.findViewById(R.id.kms);
-
+            name = itemView.findViewById(R.id.vendorName);
+            phone = itemView.findViewById(R.id.vendorPhoneNumber);
+            address = itemView.findViewById(R.id.vendorAddress);
             clistener = myListener;
             itemView.setOnClickListener(this);
 
         }
 
-
         @Override
         public void onClick(View v) {
             Log.d("TAG", "onClick: " + getAdapterPosition());
-            myListener.onUserVehicleClick(temp.get(getAdapterPosition()));
+            myListener.onVendorClick(temp.get(getAdapterPosition()));
         }
     }
 
@@ -91,15 +89,15 @@ public class Adapter_Select_Current_Vehicle extends RecyclerView.Adapter<Adapter
     Filter exampleFiler = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<VehicleUser> filteredList = new ArrayList<>();
+            List<Vendor> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(data);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (VehicleUser item : data) {
-                    if (item.getPlateNo().toLowerCase().contains(filterPattern)) {
+                for (Vendor item : data) {
+                    if (item.getName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -119,6 +117,6 @@ public class Adapter_Select_Current_Vehicle extends RecyclerView.Adapter<Adapter
         }
     };
     public interface OnClickListener{
-        void onUserVehicleClick(VehicleUser vehicle);
+        void onVendorClick(Vendor vendor);
     }
 }
