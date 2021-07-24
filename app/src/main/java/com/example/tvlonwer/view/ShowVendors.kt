@@ -69,4 +69,7 @@ class ShowVendors : Fragment() ,Adapter_ShowVendors.OnClickListener{
     override fun onVendorClick(vendor: Vendor?) {
         Toast.makeText(requireContext(),vendor!!.name,Toast.LENGTH_SHORT).show()
     }
+
+
+
 }

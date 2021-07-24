@@ -1,6 +1,8 @@
 package com.example.tvlonwer.view.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.example.tvlonwer.model.Vendor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Adapter_ShowVendors extends RecyclerView.Adapter<Adapter_ShowVendors.ViewHolder> implements Filterable {
@@ -72,12 +75,41 @@ public class Adapter_ShowVendors extends RecyclerView.Adapter<Adapter_ShowVendor
             address = itemView.findViewById(R.id.vendorAddress);
             clistener = myListener;
             itemView.setOnClickListener(this);
+            phone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String nbr = (String) phone.getText();
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData( Uri.parse("tel:"+nbr));
+                    c.startActivity(callIntent);
+                }
+            });
 
+            address.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Double longitude=0.0, latitude=0.0;
+                    for(Vendor vendor : temp){
+                        if(vendor.getPhone() == phone.getText())
+                        {
+                            longitude = vendor.getLocation().longitude;
+                            latitude = vendor.getLocation().latitude;
+                        }
+                    }
+                    if(longitude != 0.0 && latitude!= 0.0) {
+                        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        c.startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(itemView.getContext(),"Address not founf",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
-            Log.d("TAG", "onClick: " + getAdapterPosition());
             myListener.onVendorClick(temp.get(getAdapterPosition()));
         }
     }
@@ -118,5 +150,6 @@ public class Adapter_ShowVendors extends RecyclerView.Adapter<Adapter_ShowVendor
     };
     public interface OnClickListener{
         void onVendorClick(Vendor vendor);
+
     }
 }
