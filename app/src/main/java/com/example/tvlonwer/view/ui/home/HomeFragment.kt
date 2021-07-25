@@ -61,7 +61,6 @@ class HomeFragment : Fragment() {
         plateView = root.findViewById(R.id.plate_no)
         kilometersView = root.findViewById(R.id.kms)
         progessBar = root.findViewById(R.id.pbar)
-
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
 
 
@@ -235,11 +234,11 @@ class HomeFragment : Fragment() {
 
                 }
                 .addOnFailureListener { exception ->
-
+                    progessBar.visibility= View.GONE
                 }
 
         }
-        progessBar.visibility= View.GONE
+
     }
 
     private fun updateKms(manual_kms: Float) {
@@ -256,7 +255,7 @@ class HomeFragment : Fragment() {
             for(i in 0..parts?.size-1){
                 var partLife = parts[i]?.remainingLife?.toFloat()
                 partLife = partLife?.plus((diff.toFloat()))
-                if(partLife!!.compareTo(1) > 0 ){
+                if(partLife!!.compareTo(100) > 0 ){
                     parts[i]?.remainingLife = partLife.toString()
                 }
                 else{

@@ -18,7 +18,6 @@ class ViewAppointmentViewModel {
     var db = FirebaseFirestore.getInstance()
     var vendorIDs : String = ""
 
-
     fun getAppointments(){
         var lst = ArrayList<Appointment>()
         db.collection("Appointment")

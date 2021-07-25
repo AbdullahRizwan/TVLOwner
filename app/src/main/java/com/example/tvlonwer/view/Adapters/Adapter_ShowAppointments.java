@@ -93,6 +93,7 @@ public class Adapter_ShowAppointments extends RecyclerView.Adapter<Adapter_ShowA
                 }
             });
             Button btn = (Button)itemView.findViewById(R.id.showLocation);
+
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Double longitude=0.0, latitude=0.0;
@@ -111,8 +112,6 @@ public class Adapter_ShowAppointments extends RecyclerView.Adapter<Adapter_ShowA
                     else{
                         Toast.makeText(itemView.getContext(),"Address not founf",Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
             });
         }

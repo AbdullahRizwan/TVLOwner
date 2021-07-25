@@ -36,7 +36,9 @@ public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if(temp.size() > position) {
             holder.name.setText(temp.get(position).getName());
-            holder.life.setText(temp.get(position).getRemainingLife());
+            Float asd= Float.parseFloat(temp.get(position).getRemainingLife());
+            asd = (asd/ Float.parseFloat(temp.get(position).getLife()))*100;
+            holder.life.setText(""+asd.intValue()+" %");
         }
         else {
             Toast.makeText(c,"Error", Toast.LENGTH_SHORT).show();
