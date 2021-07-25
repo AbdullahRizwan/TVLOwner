@@ -30,7 +30,7 @@ class SlideshowFragment : Fragment() ,
         var recyclerView = root.findViewById<RecyclerView>(R.id.expiredParts)
         var recyclerViewAdapter =
             Adapter_ShowParts()
-        recyclerViewAdapter.setData(slideshowViewModel.getParts(),requireContext(),this)
+        recyclerViewAdapter.setData(slideshowViewModel.getParts(),"",requireContext(),this)
         recyclerView.layoutManager =  LinearLayoutManager(requireContext())
         recyclerView.adapter = recyclerViewAdapter
 

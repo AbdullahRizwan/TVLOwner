@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tvlonwer.MainActivity
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Part
 import com.example.tvlonwer.model.Vehicle
 import com.example.tvlonwer.view.Adapters.Adapter_ShowParts
 
 class showParts : AppCompatActivity(), Adapter_ShowParts.OnClickListener {
+
+
     private lateinit var vehicle: Vehicle
+    private lateinit var category: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +26,7 @@ class showParts : AppCompatActivity(), Adapter_ShowParts.OnClickListener {
         val vehicleFromExtra :Bundle ?=intent.extras
         if (vehicleFromExtra!=null) {
             vehicle = vehicleFromExtra.get("vehicle") as Vehicle
+            category = vehicleFromExtra.get("category") as String
         }
         else{
             Toast.makeText(this,"Error getting vehicle information",Toast.LENGTH_LONG).show()
@@ -29,7 +35,7 @@ class showParts : AppCompatActivity(), Adapter_ShowParts.OnClickListener {
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPart)
         var recyclerViewAdapter =
             Adapter_ShowParts()
-        recyclerViewAdapter.setData(vehicle.parts,this,this)
+        recyclerViewAdapter.setData(vehicle.parts,category,this,this)
         recyclerView.layoutManager =  LinearLayoutManager(this)
         recyclerView.adapter = recyclerViewAdapter
         var searchView = findViewById<SearchView>(R.id.searchPartFilters)
@@ -53,7 +59,7 @@ class showParts : AppCompatActivity(), Adapter_ShowParts.OnClickListener {
         Toast.makeText(this,"Heyyyy",Toast.LENGTH_SHORT).show()
             if (part != null) {
                 part.remainingLife="0"
-
             }
     }
+
 }

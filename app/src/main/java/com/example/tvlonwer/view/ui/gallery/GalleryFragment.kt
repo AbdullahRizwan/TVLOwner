@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.R
 import com.example.tvlonwer.model.Vehicle
-import com.example.tvlonwer.view.Login
-import com.example.tvlonwer.view.MainScreenActivity
-import com.example.tvlonwer.view.associate_vehicle_owner
-import com.example.tvlonwer.view.showParts
+import com.example.tvlonwer.view.*
+import com.example.tvlonwer.view.ui.home.HomeFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -67,6 +67,13 @@ class GalleryFragment : Fragment() , gallaryRecyclerViewAdapter.OnClickListener{
 
         val value  = Intent(activity, showParts::class.java)
         value.putExtra("vehicle",vehicle)
-        startActivity(value)
+        var fragment = ShowCategory.newInstance(vehicle!!)
+        val fragmentManager: FragmentManager? = fragmentManager
+        val fragmentTransaction: FragmentTransaction =
+            fragmentManager!!.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment)
+        fragmentTransaction.addToBackStack(null)
+        btn.isEnabled = true
+        fragmentTransaction.commit()
     }
 }

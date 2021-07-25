@@ -116,7 +116,8 @@ public class gallaryRecyclerViewAdapter extends RecyclerView.Adapter<gallaryRecy
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            temp.clear();
+            if(temp!=null)
+                temp.clear();
             temp.addAll((List) results.values);
             notifyDataSetChanged();
         }

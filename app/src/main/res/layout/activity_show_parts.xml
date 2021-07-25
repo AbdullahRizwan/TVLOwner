@@ -29,8 +29,8 @@
             android:textColor="@color/mainColor"
             />
 
-
     </LinearLayout>
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchPartFilters"
         android:layout_width="match_parent"

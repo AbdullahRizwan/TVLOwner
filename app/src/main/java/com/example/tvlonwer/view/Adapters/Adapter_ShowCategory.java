@@ -12,31 +12,31 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.tvlonwer.R;
 import com.example.tvlonwer.model.Part;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.ViewHolder> implements Filterable {
-    private ArrayList<Part> data = new ArrayList<>();
-    protected ArrayList<Part> temp = new ArrayList<>();
+public class Adapter_ShowCategory extends RecyclerView.Adapter<Adapter_ShowCategory.ViewHolder> implements Filterable {
+    private ArrayList<String> data;
+    protected ArrayList<String> temp;
     private Context c;
-    private OnClickListener myListener;
-    private String cat;
+    private Adapter_ShowCategory.OnClickListener myListener;
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Adapter_ShowCategory.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.single_show_recycler_view_showparts, parent, false);
-        return new ViewHolder(view,myListener);
+        View view = inflater.inflate(R.layout.single_category, parent, false);
+        return new Adapter_ShowCategory.ViewHolder(view,myListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Adapter_ShowCategory.ViewHolder holder, int position) {
         if(temp.size() > position) {
-            holder.name.setText(temp.get(position).getName());
-            holder.life.setText(temp.get(position).getRemainingLife());
+            holder.name.setText(temp.get(position));
+
         }
         else {
             Toast.makeText(c,"Error", Toast.LENGTH_SHORT).show();
@@ -48,32 +48,23 @@ public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.Vi
         return temp.size();
     }
 
-    public void setData(ArrayList<Part> d, String category, Context context, OnClickListener click) {
-        for(int i=0; i<d.size(); i++){
-            if(category .equals(""))
-                data.add(d.get(i));
-            else if(d.get(i).getType().equals(category)){
-                data.add(d.get(i));
-            }
-        }
-        temp = new ArrayList<Part>();
-        temp.addAll(data);
+    public void setData(ArrayList<String> d, Context context, Adapter_ShowCategory.OnClickListener click) {
+        data = d;
+        temp = new ArrayList<String>();
+        temp.addAll(d);
         c = context;
         myListener = click;
-
     }
 
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
-        TextView life;
-        OnClickListener clistener;
+        Adapter_ShowCategory.OnClickListener clistener;
 
-        public ViewHolder(@NonNull View itemView, OnClickListener myListener) {
+        public ViewHolder(@NonNull View itemView, Adapter_ShowCategory.OnClickListener myListener) {
             super(itemView);
-            name = itemView.findViewById(R.id.name);
-            life = itemView.findViewById(R.id.life);
+            name = itemView.findViewById(R.id.category);
             clistener = myListener;
             itemView.setOnClickListener(this);
 
@@ -83,7 +74,7 @@ public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.Vi
         @Override
         public void onClick(View v) {
             Log.d("TAG", "onClick: " + getAdapterPosition());
-            myListener.onPartClick(temp.get(getAdapterPosition()));
+            myListener.onCategoryClick(temp.get(getAdapterPosition()));
         }
     }
 
@@ -94,15 +85,15 @@ public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.Vi
     Filter exampleFiler = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Part> filteredList = new ArrayList<>();
+            List<String> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(data);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Part item : data) {
-                    if (item.getName().toLowerCase().contains(filterPattern)) {
+                for (String item : data) {
+                    if (item.toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -122,7 +113,7 @@ public class Adapter_ShowParts extends RecyclerView.Adapter<Adapter_ShowParts.Vi
         }
     };
     public interface OnClickListener{
-        void onPartClick(Part part);
+        void onCategoryClick(String category);
     }
 
 }
