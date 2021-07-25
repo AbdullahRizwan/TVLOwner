@@ -46,19 +46,20 @@ class GalleryFragment : Fragment() , gallaryRecyclerViewAdapter.OnClickListener{
             recyclerViewAdapter.setData(galleryViewModel.data, this.context, this)
             recyclerView.layoutManager = LinearLayoutManager(this.context)
             recyclerView.adapter = recyclerViewAdapter
+            var searchView = root.findViewById<SearchView>(R.id.searchVehicle)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(s: String): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(s: String): Boolean {
+                    recyclerViewAdapter.filter.filter(s)
+                    return true
+                }
+            })
         })
 
-        var searchView = root.findViewById<SearchView>(R.id.searchVehicle)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(s: String): Boolean {
-                return false
-            }
 
-            override fun onQueryTextChange(s: String): Boolean {
-                recyclerViewAdapter.filter.filter(s)
-                return true
-            }
-        })
 
         return root
     }

@@ -52,6 +52,7 @@ class ViewAppointments : Fragment() {
         viewModel.appointments.observe(requireActivity(),{
             viewModel.getVendors(viewModel.appointments.value!!)
             viewModel.vendors.observe(requireActivity(),{
+
                 var recyclerView = root.findViewById<RecyclerView>(R.id.recyclerviewViewappointment)
                 val recyclerViewAdapter =
                     Adapter_ShowAppointments()
