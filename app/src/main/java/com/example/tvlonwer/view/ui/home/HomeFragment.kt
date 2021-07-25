@@ -234,7 +234,7 @@ class HomeFragment : Fragment() {
 
                 }
                 .addOnFailureListener { exception ->
-
+                    progessBar.visibility= View.GONE
                 }
 
         }

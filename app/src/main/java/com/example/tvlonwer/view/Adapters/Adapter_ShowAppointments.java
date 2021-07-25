@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tvlonwer.R;
 import com.example.tvlonwer.model.Appointment;
 import com.example.tvlonwer.model.Vendor;
+import com.example.tvlonwer.view.Feedback;
 
 import java.util.ArrayList;
 
@@ -70,6 +71,27 @@ public class Adapter_ShowAppointments extends RecyclerView.Adapter<Adapter_ShowA
             name = itemView.findViewById(R.id.nameofvendor);
             phone = itemView.findViewById(R.id.phone);
             dateandtime = itemView.findViewById(R.id.dateandtime);
+            Button feedbackBtn=(Button)itemView.findViewById(R.id.feedback);
+            feedbackBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(c.getApplicationContext(), Feedback.class);
+                    String vendorName="";
+                    String id = "";
+                    for(Vendor vendor:vendorArrayList){
+                        if(name.getText().equals(vendor.getName())){
+                            vendorName=vendor.getName();
+                            id=vendor.getId();
+                            break;
+                        }
+                    }
+                    intent.putExtra("Vendor_Id", id);
+                    intent.putExtra("Vendor_Name",vendorName);
+                    c.startActivity(intent);
+
+                }
+            });
             Button btn = (Button)itemView.findViewById(R.id.showLocation);
 
             btn.setOnClickListener(new View.OnClickListener() {
