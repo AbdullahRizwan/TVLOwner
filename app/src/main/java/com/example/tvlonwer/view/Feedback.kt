@@ -44,19 +44,7 @@ class Feedback : AppCompatActivity() {
 
 
         }
-            /*viewModel.addApointment(approved ,ownerId.uid , time , uservehicle_Id, vendor_Id)
-            viewModel.result.observe(requireActivity(),{
-                if(viewModel.result.value == true){
-                    val fragmentManager: FragmentManager? = fragmentManager
-                    val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
-                    fragmentTransaction.replace(R.id.nav_host_fragment, ViewAppointments())
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
-                }
-                else{
-                    Toast.makeText(requireContext(),"Something went wrong", Toast.LENGTH_SHORT).show()
-                }
-            })*/
+
 
         }
 
