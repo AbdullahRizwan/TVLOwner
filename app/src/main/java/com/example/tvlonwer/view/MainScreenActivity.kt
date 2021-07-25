@@ -20,6 +20,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+
+
+
 
 
 class MainScreenActivity : AppCompatActivity() {
@@ -76,6 +80,7 @@ class MainScreenActivity : AppCompatActivity() {
     }
 
     public fun intiHome(){
+
         val db = FirebaseFirestore.getInstance()
         db.collection("Owner")
             .get()

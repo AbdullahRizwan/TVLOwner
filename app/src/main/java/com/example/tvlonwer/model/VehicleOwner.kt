@@ -30,6 +30,10 @@ class  VehicleUser {
     public fun getKilometers():Float{
         return this.kilometers;
     }
+    public fun getId():String{
+        return this.vehicleUserId;
+    }
+
     public fun setKilometers(kms:Float){
         kilometers=kms;
     }

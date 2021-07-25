@@ -1,19 +1,16 @@
 package com.example.tvlonwer.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.tvlonwer.R
 import com.example.tvlonwer.viewModel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import java.security.acl.Owner
+import com.google.firebase.FirebaseApp
 
 class Login : AppCompatActivity() {
     private var loginViewModel: LoginViewModel = LoginViewModel()
@@ -21,6 +18,7 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         if(FirebaseAuth.getInstance().currentUser!=null){
             val value  = Intent(this, MainScreenActivity::class.java)
             value.putExtra("user", FirebaseAuth.getInstance().currentUser?.uid)
@@ -59,23 +57,6 @@ class Login : AppCompatActivity() {
     fun forgetPassword(view: View){
         val value=Intent(this,ForgetPassword::class.java)
         startActivity(value)
-        /*val email = findViewById<EditText>(R.id.email);
-        if(email.text.contains("@") ){
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email.text.toString())
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("Login", "Email sent.")
-                        } else {
-                            Toast.makeText(
-                                this,
-                                "Failed to send reset email!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-        }else{
-            if(!email.text.contains("@"))
-                email.error = "Incorrect email format"
-*/
+
         }
 }

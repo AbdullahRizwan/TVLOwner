@@ -30,10 +30,7 @@ import com.example.tvlonwer.model.Owner
 import com.example.tvlonwer.model.Part
 import com.example.tvlonwer.model.Vehicle
 import com.example.tvlonwer.model.VehicleUser
-import com.example.tvlonwer.view.Activity_Select_Current_Vehicle
-import com.example.tvlonwer.view.MainScreenActivity
-import com.example.tvlonwer.view.ShowVendors
-import com.example.tvlonwer.view.TransferOwnership
+import com.example.tvlonwer.view.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -130,6 +127,14 @@ class HomeFragment : Fragment() {
             fragmentTransaction.commit()
         }
 
+        root.findViewById<Button>(R.id.Appointments).setOnClickListener{
+            val fragmentManager: FragmentManager? = fragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+            fragmentTransaction.replace(R.id.nav_host_fragment, ViewAppointments())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
         val ownershipBtn: Button
         ownershipBtn=root.findViewById(R.id.transferOwnership)
         ownershipBtn.setOnClickListener{
@@ -160,9 +165,7 @@ class HomeFragment : Fragment() {
                 DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
             builder.show()
         }
-
         getVehicleFromPreference()
-
         return root
     }
 
@@ -234,11 +237,7 @@ class HomeFragment : Fragment() {
                 .addOnFailureListener { exception ->
 
                 }
-
         }
-
-
-
     }
 
     private fun updateKms(manual_kms: Float) {
