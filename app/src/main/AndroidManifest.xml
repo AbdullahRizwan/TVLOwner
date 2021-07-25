@@ -16,12 +16,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TVLOnwer">
-        <activity android:name=".view.AddKilometers"></activity>
-        <activity android:name=".view.Activity_Select_Current_Vehicle" />
-<!--        <activity android:name=".view.Activity_Select_Vehicle" />-->
-<!--        <activity android:name=".Activity_Select_Current_Vehicle" />-->
-<!--        <activity android:name=".Select_Current_Vehicle" />-->
-<!--        <activity android:name=".view.TransferOwnership" />-->
+        <activity android:name=".view.view_parts"></activity>
+        <activity android:name=".view.AddKilometers" />
+        <activity android:name=".view.Activity_Select_Current_Vehicle" /> <!-- <activity android:name=".view.Activity_Select_Vehicle" /> -->
+        <!-- <activity android:name=".Activity_Select_Current_Vehicle" /> -->
+        <!-- <activity android:name=".Select_Current_Vehicle" /> -->
+        <!-- <activity android:name=".view.TransferOwnership" /> -->
         <activity android:name=".view.showParts" />
         <activity android:name=".view.associate_vehicle_owner" />
         <activity android:name=".view.Profile" />

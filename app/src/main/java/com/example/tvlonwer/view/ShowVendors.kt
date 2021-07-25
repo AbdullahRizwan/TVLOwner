@@ -1,5 +1,6 @@
 package com.example.tvlonwer.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.example.tvlonwer.model.Vendor
 import com.example.tvlonwer.view.Adapters.Adapter_Select_Current_Vehicle
 import com.example.tvlonwer.view.Adapters.Adapter_ShowVendors
 import com.example.tvlonwer.viewModel.ShowVendorsViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * A simple [Fragment] subclass.
@@ -67,7 +69,9 @@ class ShowVendors : Fragment() ,Adapter_ShowVendors.OnClickListener{
     }
 
     override fun onVendorClick(vendor: Vendor?) {
-        Toast.makeText(requireContext(),vendor!!.name,Toast.LENGTH_SHORT).show()
+        val value  = Intent(requireContext(), view_parts::class.java)
+        value.putExtra("vendorID",vendor!!.id)
+        startActivity(value)
     }
 
 
