@@ -8,7 +8,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.R
+import com.example.tvlonwer.view.Adapters.Adapter_SelectVehicle
+import com.example.tvlonwer.view.Adapters.Adapter_ShowAppointments
+import com.example.tvlonwer.view.Adapters.Adapter_ShowVendors
+import com.example.tvlonwer.viewModel.ViewAppointmentViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,7 +28,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ViewAppointments : Fragment() {
-
+    var viewModel = ViewAppointmentViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,20 @@ class ViewAppointments : Fragment() {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
+
+        viewModel.getAppointments()
+        viewModel.appointments.observe(requireActivity(),{
+            viewModel.getVendors(viewModel.appointments.value!!)
+            viewModel.vendors.observe(requireActivity(),{
+                var recyclerView = root.findViewById<RecyclerView>(R.id.recyclerviewViewappointment)
+                val recyclerViewAdapter =
+                    Adapter_ShowAppointments()
+                recyclerViewAdapter.setData(viewModel.appointments,viewModel.vendors.value!!, requireActivity())
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.adapter = recyclerViewAdapter
+            })
+        })
+        
         return root
     }
 

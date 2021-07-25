@@ -55,9 +55,6 @@ class AddAppointment : Fragment(), AdapterView.OnItemSelectedListener {
         var timeUpdated = MutableLiveData<Int>()
     }
 
-
-
-
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -133,6 +130,7 @@ class AddAppointment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
+
     fun showTimePickerDialog(v: View) {
         TimePickerFragment().show(requireActivity().supportFragmentManager, "timePicker")
     }
@@ -160,6 +158,7 @@ class AddAppointment : Fragment(), AdapterView.OnItemSelectedListener {
             timeUpdated.value = (timeUpdated.value)?.plus(1)
         }
     }
+
     class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -181,6 +180,10 @@ class AddAppointment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        (activity as MainScreenActivity?)!!
+            .setActionBarTitle("Add Appointments")
+    }
 
 }

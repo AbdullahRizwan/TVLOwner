@@ -60,7 +60,6 @@ class AddAppointmentViewModel : ViewModel() {
 
             result.value = true
         }.addOnFailureListener { e ->
-
             result.value = false
         }
     }
