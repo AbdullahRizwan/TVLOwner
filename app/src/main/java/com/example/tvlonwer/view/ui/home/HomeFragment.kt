@@ -237,7 +237,9 @@ class HomeFragment : Fragment() {
                 .addOnFailureListener { exception ->
 
                 }
+
         }
+        progessBar.visibility= View.GONE
     }
 
     private fun updateKms(manual_kms: Float) {

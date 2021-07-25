@@ -1,21 +1,24 @@
 package com.example.tvlonwer.view
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import android.widget.Toast.makeText
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tvlonwer.R
-import com.example.tvlonwer.view.Adapters.Adapter_SelectVehicle
 import com.example.tvlonwer.view.Adapters.Adapter_ShowAppointments
-import com.example.tvlonwer.view.Adapters.Adapter_ShowVendors
 import com.example.tvlonwer.viewModel.ViewAppointmentViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,6 +50,7 @@ class ViewAppointments : Fragment() {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
+
 
         viewModel.getAppointments()
         viewModel.appointments.observe(requireActivity(),{
